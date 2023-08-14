@@ -2,7 +2,7 @@ import React ,{useState} from "react";
 import { TextField , Button , Typography , Paper } from "@mui/material";
 import FileBase from "react-file-base64";
 // import useStyles from './styles';
-import {myPaper , myForm , myfileInput , buttonSubmit} from './styles';
+import  { root ,myPaper , myForm , myfileInput , buttonSubmit} from './styles';
 
 
 const Form = () => {
@@ -19,7 +19,7 @@ const Form = () => {
 
     return (
        <Paper sx = {myPaper} >
-            <form sx = {myForm} autoComplete="off" noValidate  onSubmit={handleSubmit}>
+            <form sx = {`${root} ${myForm}`} autoComplete="off" noValidate  onSubmit={handleSubmit}>
                 <Typography variant="h6" >Creating a Memory</Typography>
                 <TextField name="creator"variant="outlined" label="creator" fullWidth  value={postData.creator}  onChange={(event) =>setPostData((prevData) => {   return { ...prevData, creator: event.target.value }; })}/>
                 <TextField name="title"variant="outlined" label="title" fullWidth  value={postData.title}  onChange={(event) =>setPostData((prevData) => {   return { ...prevData, title: event.target.value }; })}/>

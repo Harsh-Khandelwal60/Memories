@@ -14,5 +14,10 @@ const myfileInput = {
 const buttonSubmit = {
   marginBottom: '10px',
 }
+const root =  {
+  '& .MuiTextField-root': {
+    margin:(theme) => theme.spacing(1),
+  }
+}
 
-export {myPaper , myForm , myfileInput , buttonSubmit};
+export { root, myPaper , myForm , myfileInput , buttonSubmit};
