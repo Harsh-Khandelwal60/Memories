@@ -1,10 +1,50 @@
 import React from "react";
-import useStyles from './styles';
+import {classes} from './styles';
+import {Card ,CardContent , CardMedia , Button , Typography, CardActions} from '@mui/material';
+import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
+import DeleteIcon from '@mui/icons-material/Delete';
+import moment from 'moment';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 
-const Post = () => {
-    const classes = useStyles();
+const Post = ({post , setCurrentId}) => {
+    // console.log(post.selectedFile);
     return (
-        <h1>POST</h1>
+        <Card sx={classes.card}>
+            <CardMedia sx={classes.media} image={post.selectedFile} title={post.title} alt="Image"/>
+            <div style={classes.overlay}>
+                <Typography variant="h6"> {post.creator}</Typography>
+                <Typography variant="body2">{moment(post.createdAt).fromNow()}</Typography>
+            </div>
+            <div style={classes.overlay2}>
+                <Button sx={{ color: 'white' }}
+                 size="small" 
+                 onClick={() => setCurrentId(post._id)}><MoreHorizIcon fontSize="default" /></Button>
+            </div>
+            <div style={classes.details}>
+                <Typography variant="body2" color="textSecondary">{post.tags.map((tag) => `# ${tag}`)}</Typography>
+            </div>
+            <div>
+                <Typography sx={classes.title} variant="h5" gutterBottom>{post.title}</Typography>
+                <CardContent>
+                    <Typography variant="h5" gutterBottom>{post.message}</Typography>
+                </CardContent>
+                <CardActions sx={classes.cardActions}>
+                    <Button size="small" color="primary" onClick={() => {}} >
+                        <ThumbUpAltIcon fontSize="small" />
+                        Like
+                        {post.likeCount}
+                    </Button>
+                    <Button size="small" color="primary" onClick={() => {}} >
+                        <DeleteIcon fontSize="small" />
+                        Delete
+                    </Button>
+
+                </CardActions>
+
+            </div>
+            
+
+        </Card>
     );
 };
 
