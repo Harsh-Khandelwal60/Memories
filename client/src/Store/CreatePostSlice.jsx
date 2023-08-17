@@ -13,8 +13,13 @@ const CreatePostSlice = createSlice({
             return  action.payload;
         }, 
         update(state,action){
-            
-            return state.map((post) => action.payload.id===post.id ? action.payload:post );
+            return state.map((post) => action.payload._id===post._id ? action.payload:post );
+        },
+        Delete(state,action) {
+            return state.filter((post) => post._id !== action.payload );
+        },
+        like(state,action) {
+            return state.map((post) => action.payload._id===post._id ? action.payload:post );
         }
     },
 })
@@ -41,12 +46,35 @@ export const createPosts  = (post) => async (dispatch) => {
 export const updatePosts = (id,postData) => async (dispatch) => {
         try {
             const { data } = await api.updatePost(id,postData);
-            dispatch(update({id,data}));
+            console.log(data);
+            dispatch(update(data));
         } catch (error) {
             console.log(error.message);
         }
 }
 
+export const deletePosts = (id) => async (dispatch) => {
+    try {
+        await api.deletePost(id);
+        
+        dispatch(Delete(id));
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const likePosts = (id) => async (dispatch) => {
+    try {
+        
+        const { data } = await api.likePost(id);
+        
+        dispatch(like(data));
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 export default CreatePostSlice.reducer;
-export const {create, fetchApi, update}= CreatePostSlice.actions;
+export const {create, fetchApi, update , Delete , like}= CreatePostSlice.actions;
 

@@ -9,16 +9,22 @@ import { useSelector } from "react-redux";
 
 
 const Form = ({currentId, setCurrentId}) => {
-    // const classes = useStyles();
     const dispatch = useDispatch();
-    const [postData,setPostData] = useState({creator:'',title:'', message:'', tags:'', selectedFiles:''});
+    const [postData,setPostData] = useState({creator:'',title:'', message:'', tags:'', selectedFile:''});
     const post = useSelector((state) => currentId ? state.Post.find((p) => p._id === currentId) :null );
-    console.log(post);
+    
     useEffect(() => {
-        if(post){
+        if (post) {
             setPostData(post);
         }
-    },[post]);
+    }, [currentId, post]);
+    
+    const clear = () => {
+        setCurrentId(null);
+       
+        setPostData({creator:'',title:'', message:'', tags:'', selectedFile:''});
+        
+    }
    
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -27,12 +33,12 @@ const Form = ({currentId, setCurrentId}) => {
         }else{
             dispatch(createPosts(postData));
         }
-        clear();
-    }
-    const clear = () => {
         setCurrentId(null);
-        setPostData({creator:'',title:'', message:'', tags:'', selectedFiles:''});
+       
+        setPostData({creator:'',title:'', message:'', tags:'', selectedFile:''});
+
     }
+   
 
     return (
        <Paper sx = {myPaper} >

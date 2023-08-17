@@ -20,7 +20,11 @@ const App = () => {
 
     useEffect(() => {
         dispatch(getPosts());
-    },[currentId,dispatch])
+        // console.log(currentId);
+    },[currentId,dispatch]);
+
+ 
+
     return(
         <Container  maxWidth="lg">
             <AppBar style={classes.appBar} position="static" color="inherit">
@@ -34,7 +38,7 @@ const App = () => {
                     <Posts setCurrentId={setCurrentId} />
                     </Grid>
                     <Grid item xs={12} sm={4}>
-                    <Form currentId={currentId} setCurrentId={setCurrentId} />
+                    <Form currentId={currentId} setCurrentId={setCurrentId}  />
                     </Grid>
                 </Grid>
                 </Container>
