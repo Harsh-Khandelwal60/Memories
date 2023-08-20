@@ -2,12 +2,19 @@ import React, { useState , useEffect } from "react";
 import { AppBar, Typography , Toolbar , Avatar , Button} from "@mui/material";
 import useStyles from './styles';
 import memories from '../../images/memories.png';
-import { Link } from 'react-router-dom';
+import { Link , useNavigate , useLocation } from 'react-router-dom';
+import { useDispatch } from "react-redux";
+import { logout2 } from "../../Store/Authorization";
+
 
 
 const Navbar = () => {
     const classes = useStyles();
     const [user , setUser] = useState(JSON.parse(localStorage.getItem('profile')));
+    const dispatch = useDispatch();
+    const Navigate = useNavigate();
+    const location = useLocation();
+
     console.log(user);
 
     useEffect(() => {
@@ -15,10 +22,15 @@ const Navbar = () => {
         //JWT
 
         setUser(JSON.parse(localStorage.getItem('profile')));
-    },[])
+    },[location])
 
 
-    const logout = () => {};    
+    const logout = () => {
+        dispatch(logout2())
+        setUser(null);
+        Navigate('/auth');
+
+    };    
     return (
         <AppBar style={classes.appBar} position="static" color="inherit">
             <div style={classes.brandContainer}>
