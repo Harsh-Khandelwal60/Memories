@@ -5,23 +5,42 @@ import useStyles from './Styles';
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Input from "./Input";
 import { useDispatch } from 'react-redux';
-import { Auth2 } from '../../Store/Authorization';
-import Icon from './Icon';
+import { Auth2  } from '../../Store/Authorization';
+import { signIn , signUp } from '../../Store/auth';
+
+
 import jwt_decode from "jwt-decode";
 import { useNavigate } from 'react-router-dom';
 
+const initialState = { firstName: "" , lastName : "" , email : "" , password : "" , confirmPassword : "" };
 
 const Auth = () => {
     const classes = useStyles();
     const [showPassword , setShowPassword] = useState(false);
     const [isSignup, setIsSignUp] = useState(false);
+    const [formData , setFormData] = useState(initialState);
     const dispatch = useDispatch();
     const Navigate = useNavigate();
 
-    const handleChange = () => {};
-    const handleSubmit = () => {};
+    const handleChange = (e) => {
+        setFormData({...formData , [e.target.name]: e.target.value})
+    };
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const data = {formData , Navigate};
+        if(isSignup){
+            dispatch(signUp(data))
+        }else{
+            dispatch(signIn(data));
+        }
+    };
     const handleShowPassword = () => setShowPassword((prevShowPassword) => !prevShowPassword);
-    const switchMode = () => setIsSignUp((prevSignUp) => !prevSignUp);
+
+
+    const switchMode = () => {
+        setIsSignUp((prevSignUp) => !prevSignUp);
+        handleShowPassword();
+    }
 
 
 
@@ -66,8 +85,8 @@ const Auth = () => {
                     isSignup && (
                        <>
                             
-                            <Input name='firstname' label= 'First Name' handleChange={handleChange} autoFocus half/>        
-                            <Input name='lastname' label= 'Last Name' handleChange={handleChange} half/>
+                            <Input name='firstName' label= 'First Name' handleChange={handleChange} autoFocus half/>        
+                            <Input name='lastName' label= 'Last Name' handleChange={handleChange} half/>
                 
                        </>
                     )
