@@ -4,9 +4,10 @@ import { GoogleLogin } from '@react-oauth/google';
 import useStyles from './Styles';
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Input from "./Input";
-import { useDispatch } from 'react-redux';
+import { useDispatch , useSelector } from 'react-redux';
 import { Auth2  } from '../../Store/Authorization';
-import { signIn , signUp } from '../../Store/auth';
+import { signIn , signUp } from '../../Store/Authentication';
+
 
 
 import jwt_decode from "jwt-decode";
@@ -23,15 +24,14 @@ const Auth = () => {
     const Navigate = useNavigate();
 
     const handleChange = (e) => {
-        setFormData({...formData , [e.target.name]: e.target.value})
+        setFormData({...formData , [e.target.name]: e.target.value});
     };
     const handleSubmit = (e) => {
         e.preventDefault();
-        const data = {formData , Navigate};
         if(isSignup){
-            dispatch(signUp(data))
+            dispatch(signUp(formData , Navigate))
         }else{
-            dispatch(signIn(data));
+            dispatch(signIn(formData , Navigate));
         }
     };
     const handleShowPassword = () => setShowPassword((prevShowPassword) => !prevShowPassword);
@@ -39,9 +39,11 @@ const Auth = () => {
 
     const switchMode = () => {
         setIsSignUp((prevSignUp) => !prevSignUp);
-        handleShowPassword();
+        setShowPassword();
     }
-
+     
+    const data1 = useSelector((state) => state.Authentication);
+    console.log(data1);
 
 
    const googleSuccess = async (res) => {
@@ -57,7 +59,7 @@ const Auth = () => {
     }
     const token = res.credential;
         
-    const data = {result ,token }
+    const data = { result ,token }
         try {
             dispatch(Auth2(data));
             Navigate('/');

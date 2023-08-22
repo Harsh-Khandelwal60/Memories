@@ -6,9 +6,9 @@ import auth from "../middleware/auth.js";
 
 router.get('/',getPosts);
 router.post('/', auth , createPost);
-router.patch('/:id', auth , updatePost);
+router.patch('/:id', auth ,updatePost);
 router.delete('/:id' , auth ,deletePost);
-router.patch('/:id/likepost', auth , likePost);
+router.patch('/:id/likepost', auth ,likePost);
 
 
 export default router;
