@@ -1,23 +1,25 @@
-const myPaper = {
-  padding:(theme) => theme.spacing(2),
-};
-const myForm = {
-  display: 'flex',
-  flexWrap: 'wrap',
-  justifyContent: 'center',
-}
-const myfileInput = {
-  width: '97%',
-  marginTop:"10px",
-  marginBottom:"10px"
-}
-const buttonSubmit = {
-  marginBottom: '10px',
-}
-const root =  {
-  '& .MuiTextField-root': {
-    margin:(theme) => theme.spacing(1),
-  }
-}
+import { makeStyles } from "mui-styles-hook";
 
-export { root, myPaper , myForm , myfileInput , buttonSubmit};
+
+export default makeStyles((theme) => ({
+  root: {
+    '& .MuiTextField-root': {
+      margin: theme.spacing(1),
+    },
+  },
+  paper: {
+    padding: theme.spacing(2),
+  },
+  form: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+  },
+  fileInput: {
+    width: '97%',
+    margin: '10px 0',
+  },
+  buttonSubmit: {
+    marginBottom: '10px',
+  },
+}));

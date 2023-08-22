@@ -2,16 +2,20 @@ import React ,{useState , useEffect} from "react";
 import { TextField , Button , Typography , Paper} from "@mui/material";
 import FileBase from "react-file-base64";
 // import useStyles from './styles';
-import  { root ,myPaper , myForm , myfileInput , buttonSubmit} from './styles';
+
 import { useDispatch } from "react-redux";
 import { createPosts , updatePosts } from "../../Store/CreatePostSlice";
 import { useSelector } from "react-redux";
 
+import useStyles from './styles';
+
 
 const Form = ({currentId, setCurrentId}) => {
     const dispatch = useDispatch();
-    const [postData,setPostData] = useState({creator:'',title:'', message:'', tags:'', selectedFile:''});
+    const [postData,setPostData] = useState({title:'', message:'', tags:'', selectedFile:''});
     const post = useSelector((state) => currentId ? state.Post.find((p) => p._id === currentId) :null );
+    const user = JSON.parse(localStorage.getItem(`profile`));
+    const classes = useStyles();
     
     useEffect(() => {
         if (post) {
@@ -22,37 +26,49 @@ const Form = ({currentId, setCurrentId}) => {
     const clear = () => {
         setCurrentId(null);
        
-        setPostData({creator:'',title:'', message:'', tags:'', selectedFile:''});
+        setPostData({title:'', message:'', tags:'', selectedFile:''});
         
     }
    
     const handleSubmit = (event) => {
         event.preventDefault();
         if(currentId){
-            dispatch(updatePosts(currentId,postData));
+            dispatch(updatePosts(currentId,{...postData , name : user?.result?.name }));
         }else{
-            dispatch(createPosts(postData));
+            
+            dispatch(createPosts({...postData , name : user?.result?.name}));
         }
         setCurrentId(null);
        
-        setPostData({creator:'',title:'', message:'', tags:'', selectedFile:''});
+        setPostData({title:'', message:'', tags:'', selectedFile:''});
 
+    }
+
+
+    if(!user?.result?.name){
+        return (
+            <Paper className= {classes.paper}>
+                <Typography variant="h6" align="center" >
+                    Please signIn to create Your Own Memoriesn and like other memories
+                </Typography>
+            </Paper>
+        )
     }
    
 
     return (
-       <Paper sx = {myPaper} >
-            <form sx = {`${root} ${myForm}`} autoComplete="off" noValidate  onSubmit={handleSubmit}>
+       <Paper sx = {classes.paper} >
+            <form sx = {`${classes.root} ${classes.form}`} autoComplete="off" noValidate  onSubmit={handleSubmit}>
                 <Typography
                 variant="h6" >{!currentId ? 'Creating' : 'Editing'} a Memory</Typography>
-                <TextField 
+                {/* <TextField 
                 name="creator"
                 variant="outlined" 
                 label="creator" 
                 fullWidth  
                 value={postData.creator}  
                 onChange={(event) =>setPostData((prevData) => {
-                       return { ...prevData, creator: event.target.value };  })}/>
+                       return { ...prevData, creator: event.target.value };  })}/> */}
                 <TextField 
                 name="title"
                 variant="outlined" 
@@ -78,14 +94,14 @@ const Form = ({currentId, setCurrentId}) => {
                 onChange={(event) =>setPostData((prevData) => {   
                     return { ...prevData, tags: event.target.value.split(',') } })}/>
            
-            <div style={myfileInput } >
+            <div style={classes.fileInput } >
                 <FileBase 
                 type="file" 
                 multiple={false} 
                 onDone={({base64}) => setPostData({...postData,selectedFile:base64})}/>
             </div>
             <Button 
-            sx={buttonSubmit} 
+            sx={classes.buttonSubmit} 
             variant="contained" 
             color="primary" 
             size="large" 
