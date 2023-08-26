@@ -14,6 +14,28 @@ export const getPosts = async(req,res,next) => {
         }
 }
 
+
+export const getPostsBySearch = async (req, res) => {
+   console.log(req.query);
+
+   const {searchQuery , tags} = req.query;
+
+   try {
+      console.log(tags);
+      const title = new RegExp(searchQuery, 'i');
+      console.log(title);
+
+      const posts = await postMessage.find({ $or: [ { title: title }, { tags: {$in: tags.split( ',' ) }  } ] } );
+
+      console.log(posts);
+
+      res.json({data: posts});
+   } catch (error) {
+      res.status(404).json({message:error.message});
+   }
+
+}
+
 export const createPost = async (req,res) => {
 
     const post = req.body;
@@ -61,7 +83,7 @@ export const updatePost = async (req,res) => {
      const index = post.likes.findIndex((id) => id === String(req.userId));
 
      if(index === -1) {
-        post.likes.push(userId);
+        post.likes.push(req.userId);
      }else{
         post.likes = post.likes.filter((id) => id !== String(req.userId));
      }

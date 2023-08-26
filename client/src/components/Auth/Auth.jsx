@@ -42,8 +42,8 @@ const Auth = () => {
         setShowPassword();
     }
      
-    const data1 = useSelector((state) => state.Authentication);
-    console.log(data1);
+    
+    
 
 
    const googleSuccess = async (res) => {
@@ -70,7 +70,6 @@ const Auth = () => {
 
    };
    const googleError = (error) => {
-        console.log(error);
         console.log(`Google Sign In was UnSuccessful. Try Again Later`);
    };
   

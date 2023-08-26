@@ -6,6 +6,7 @@ import FileBase from "react-file-base64";
 import { useDispatch } from "react-redux";
 import { createPosts , updatePosts } from "../../Store/CreatePostSlice";
 import { useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 
 import useStyles from './styles';
 
@@ -16,12 +17,19 @@ const Form = ({currentId, setCurrentId}) => {
     const post = useSelector((state) => currentId ? state.Post.find((p) => p._id === currentId) :null );
     const user = JSON.parse(localStorage.getItem(`profile`));
     const classes = useStyles();
-    
+    const location = useLocation();
+
+
+
+
+
     useEffect(() => {
         if (post) {
             setPostData(post);
         }
-    }, [currentId, post]);
+    }, [currentId, post , location]);
+
+    
     
     const clear = () => {
         setCurrentId(null);
@@ -45,11 +53,13 @@ const Form = ({currentId, setCurrentId}) => {
     }
 
 
-    if(!user?.result?.name){
+
+
+    if(!(user?.result?.name)){
         return (
             <Paper className= {classes.paper}>
                 <Typography variant="h6" align="center" >
-                    Please signIn to create Your Own Memoriesn and like other memories
+                    Please signIn to create Your Own Memories and like other memories
                 </Typography>
             </Paper>
         )
