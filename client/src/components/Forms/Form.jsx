@@ -6,18 +6,22 @@ import FileBase from "react-file-base64";
 import { useDispatch } from "react-redux";
 import { createPosts , updatePosts } from "../../Store/CreatePostSlice";
 import { useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { useLocation , useNavigate } from "react-router-dom";
 
 import useStyles from './styles';
 
 
 const Form = ({currentId, setCurrentId}) => {
+
+
+    
     const dispatch = useDispatch();
     const [postData,setPostData] = useState({title:'', message:'', tags:'', selectedFile:''});
     const post = useSelector((state) => currentId ? state.Post.posts.find((p) => p._id === currentId) : null );
     const user = JSON.parse(localStorage.getItem(`profile`));
     const classes = useStyles();
     const location = useLocation();
+    const Navigate = useNavigate();
 
 
 
@@ -44,7 +48,8 @@ const Form = ({currentId, setCurrentId}) => {
             dispatch(updatePosts(currentId,{...postData , name : user?.result?.name }));
         }else{
             
-            dispatch(createPosts({...postData , name : user?.result?.name}));
+            dispatch(createPosts({...postData , name : user?.result?.name} ,Navigate));
+            
         }
         setCurrentId(null);
        
@@ -67,7 +72,7 @@ const Form = ({currentId, setCurrentId}) => {
    
 
     return (
-       <Paper sx = {classes.paper} >
+       <Paper sx = {classes.paper} elevation={6}>
             <form sx = {`${classes.root} ${classes.form}`} autoComplete="off" noValidate  onSubmit={handleSubmit}>
                 <Typography
                 variant="h6" >{!currentId ? 'Creating' : 'Editing'} a Memory</Typography>

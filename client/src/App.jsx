@@ -27,6 +27,7 @@ const App = () => {
                <Route path='/posts/search' exact element={<Home/>}/>
                <Route path='/posts/:id' exact element={<PostDetails/>}/>
                <Route path="/auth" exact element={ !user ? <Auth/> : <Navigate to="/posts"/>} />
+               <Route path="*" exact element={ !user ? <Auth/> : <Navigate to="/posts"/>} />
            </Routes>
          </Container>
       </GoogleOAuthProvider>

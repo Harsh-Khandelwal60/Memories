@@ -19,6 +19,9 @@ const CreatePostSlice = createSlice({
                 currentPage : action.payload.currentPage,
                 numberOfPages : action.payload.numberOfPages
             }
+        },
+        fetchPost(state,action){
+            return { ...state, post: action.payload };
         }, 
         update(state,action){
             return {...state, posts: state.posts.map((post) => (post._id === action.payload._id ? action.payload : post)) };
@@ -40,6 +43,24 @@ const CreatePostSlice = createSlice({
         },
     },
 })
+
+export const getPost = (id) => {
+    return async function getPostsThunk(dispatch) {
+        try {
+            console.log(`enter`);
+            dispatch(startLoading());
+            const {data} = await api.fetchPost(id);
+
+
+            console.log(data);
+            dispatch(fetchPost(data));
+        } catch (error) {
+            console.error('Error fetching products:', error);
+        }finally {
+            dispatch(stopLoading()); // Stop loading after API call is done (whether success or error)
+        }
+    };
+};
 export const getPosts = (page) => {
     return async function getPostsThunk(dispatch) {
         try {
@@ -63,7 +84,7 @@ export const getPostsBySearch = (searchQuery) => async (dispatch) => {
         console.log(searchQuery);
         const {data : {data}} = await api.fetchPostsBySearch(searchQuery);
         
-        console.log(data);
+        // console.log(data);
 
         dispatch(fetchPostsBySearch(data));
        
@@ -72,12 +93,13 @@ export const getPostsBySearch = (searchQuery) => async (dispatch) => {
     }
 }
 
-export const createPosts  = (post) => async (dispatch) => {
+export const createPosts  = (post , Navigate) => async (dispatch) => {
     try {
        
         const {data} = await api.createPost(post)
-        // console.log(res);
         dispatch(create(data));
+
+        Navigate(`posts/${data._id}`)
     } catch (error) {
         console.log(error);
     } 
@@ -116,5 +138,5 @@ export const likePosts = (id) => async (dispatch) => {
 }
 
 export default CreatePostSlice.reducer;
-export const {create, fetchApi, update , Delete , like , fetchPostsBySearch , startLoading , stopLoading}= CreatePostSlice.actions;
+export const {create, fetchApi, update , Delete , like , fetchPostsBySearch , startLoading , stopLoading , fetchPost}= CreatePostSlice.actions;
 
