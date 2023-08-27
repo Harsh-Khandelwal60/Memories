@@ -38,28 +38,30 @@ const Home = () => {
     const searchQuery = query.get(`searchQuery`);
 
 
+    useEffect(() => {
+         searchPost();
+        },[tags]);
 
-
-    const searchPost = () => {
-
-        if(searchTags.length > 0) {
-            setTags((prev) => [...prev, searchTags]);
-            console.log(tags);
-        }
-
-        if(search.trim() || tags) {
-         dispatch(getPostsBySearch({search,tags: tags.join(',')}));
-         setSearchTags('');
-        }else{
-        Navigate('/');
-        }  
-     }
+     const searchPost = () => {
+            if(search.trim() || tags) {
+             dispatch(getPostsBySearch({search,tags: tags.join(',')}));
+             Navigate(`/posts/search?searchQuery=${search || 'none'}&tags=${tags.join(',')}` )
+             setSearchTags('');
+            }else{
+            Navigate('/');
+            }  
+         };
     
       const handleKeyPress = (e) => {
         if(e.key === `Enter`) {
-            searchPost();
+            if(searchTags.length > 0) {
+                setTags((prev) => [...prev, searchTags]);
+            }else{
+                searchPost();
+            }
         }
-      }    
+      };  
+
       
      const handleDeleteTag = (tag , idx) => {
         setTags(tags.filter((data , index) => {
@@ -68,7 +70,13 @@ const Home = () => {
         }));
      }
 
-     
+     const searchPostByButton = () => {
+        if(searchTags.length > 0) {
+            setTags((prev) => [...prev, searchTags]);
+        }else{
+            searchPost();
+        }
+     }
 
     
     return (
@@ -98,7 +106,7 @@ const Home = () => {
                                 </Box>
                             }
 
-                            <Button onClick={searchPost} sx={classes.searchButton} variant="contained" color="primary" > Search </Button>
+                            <Button onClick={searchPostByButton} sx={classes.searchButton} variant="contained" color="primary" > Search </Button>
                            
                         </AppBar>
                              <Form currentId={currentId} setCurrentId={setCurrentId}  />

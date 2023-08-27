@@ -20,6 +20,9 @@ const CreatePostSlice = createSlice({
         },
         like(state,action) {
             return state.map((post) => action.payload._id===post._id ? action.payload:post );
+        }, 
+        fetchPostsBySearch(state , action) {
+            return action.payload;
         }
     },
 })
@@ -40,6 +43,8 @@ export const getPostsBySearch = (searchQuery) => async (dispatch) => {
         console.log(searchQuery);
         const {data : {data}} = await api.fetchPostsBySearch(searchQuery);
         
+
+        dispatch(fetchPostsBySearch(data));
         console.log(data);
     } catch (error) {
         console.log(error);
@@ -90,5 +95,5 @@ export const likePosts = (id) => async (dispatch) => {
 }
 
 export default CreatePostSlice.reducer;
-export const {create, fetchApi, update , Delete , like}= CreatePostSlice.actions;
+export const {create, fetchApi, update , Delete , like , fetchPostsBySearch}= CreatePostSlice.actions;
 
