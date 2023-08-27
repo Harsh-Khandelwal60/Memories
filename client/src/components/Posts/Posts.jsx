@@ -6,17 +6,17 @@ import { Grid , CircularProgress } from '@mui/material';
 
 
 const Posts = ({setCurrentId}) => {
-    const posts = useSelector((state) => {
-        // console.log(state.Post);
+    const {posts } = useSelector((state) => {
+        console.log(state.Post);
         return state.Post;
     })
    
     return (
-       !posts.length ? <CircularProgress/> : (
+       !posts?.length ? <CircularProgress/> : (
         <Grid className={classes.container} container alignItems="stretch" spacing={3}>
             {
                 posts.map((post) => (
-                    <Grid key={post.id} item xs={12} sm={6}>
+                    <Grid key={post.id} item xs={12} sm={12} md={6} lg={4} >
                         <Post post={post}  setCurrentId={setCurrentId} />
                     </Grid>
                 ))

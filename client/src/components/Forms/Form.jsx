@@ -14,7 +14,7 @@ import useStyles from './styles';
 const Form = ({currentId, setCurrentId}) => {
     const dispatch = useDispatch();
     const [postData,setPostData] = useState({title:'', message:'', tags:'', selectedFile:''});
-    const post = useSelector((state) => currentId ? state.Post.find((p) => p._id === currentId) :null );
+    const post = useSelector((state) => currentId ? state.Post.posts.find((p) => p._id === currentId) : null );
     const user = JSON.parse(localStorage.getItem(`profile`));
     const classes = useStyles();
     const location = useLocation();
@@ -27,7 +27,7 @@ const Form = ({currentId, setCurrentId}) => {
         if (post) {
             setPostData(post);
         }
-    }, [currentId, post , location]);
+    }, [currentId , post , location]);
 
     
     

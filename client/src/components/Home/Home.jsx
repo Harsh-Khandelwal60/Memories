@@ -23,9 +23,7 @@ const Home = () => {
     const dispatch = useDispatch();
     const [currentId,setCurrentId] = useState(null);
     const classes = useStyles();
-    useEffect(() => {
-        dispatch(getPosts());
-    },[currentId,dispatch]);
+   
 
     const query = useQuery();
     const Navigate = useNavigate();
@@ -36,6 +34,8 @@ const Home = () => {
     
     const page = query.get(`page`) || 1;
     const searchQuery = query.get(`searchQuery`);
+    
+    const [flag , setFlag] = useState(false);
 
 
     useEffect(() => {
@@ -44,9 +44,13 @@ const Home = () => {
 
      const searchPost = () => {
             if(search.trim() || tags) {
-             dispatch(getPostsBySearch({search,tags: tags.join(',')}));
-             Navigate(`/posts/search?searchQuery=${search || 'none'}&tags=${tags.join(',')}` )
-             setSearchTags('');
+                if(flag) {
+                    console.log(`enter`);
+                    dispatch(getPostsBySearch({search,tags: tags.join(',')}));
+                    Navigate(`/posts/search?searchQuery=${search || 'none'}&tags=${tags.join(',')}` )
+                }
+                setFlag(true);
+                setSearchTags('');
             }else{
             Navigate('/');
             }  
@@ -111,7 +115,7 @@ const Home = () => {
                         </AppBar>
                              <Form currentId={currentId} setCurrentId={setCurrentId}  />
                              <Paper elevation={6}>
-                                <Pagination/>
+                                <Pagination page = {page} />
                              </Paper>
                          </Grid>
                      </Grid>

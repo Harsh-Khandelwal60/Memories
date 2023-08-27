@@ -4,35 +4,55 @@ import * as api from '../api/index';
 
 const CreatePostSlice = createSlice({
     name:"Post",
-    initialState:[],
+    initialState:{ 
+        isLoading: true, 
+        posts: []
+     },
     reducers:{
         create(state,action) {
-            return [...state,action.payload]
+            return { ...state, posts: [...state.posts, action.payload] };
         },
         fetchApi(state,action){
-            return  action.payload;
+            return {
+                ...state ,
+                posts : action.payload.data,
+                currentPage : action.payload.currentPage,
+                numberOfPages : action.payload.numberOfPages
+            }
         }, 
         update(state,action){
-            return state.map((post) => action.payload._id===post._id ? action.payload:post );
+            return {...state, posts: state.posts.map((post) => (post._id === action.payload._id ? action.payload : post)) };
         },
         Delete(state,action) {
-            return state.filter((post) => post._id !== action.payload );
+            return  { ...state, posts: state.posts.filter((post) => post._id !== action.payload) };
         },
         like(state,action) {
-            return state.map((post) => action.payload._id===post._id ? action.payload:post );
+            return { ...state, posts: state.posts.map((post) => (post._id === action.payload._id ? action.payload : post)) };
         }, 
         fetchPostsBySearch(state , action) {
-            return action.payload;
-        }
+            return { ...state, posts: action.payload };
+        },
+        startLoading(state) {
+            state.isLoading = true;
+        },
+        stopLoading(state) {
+            state.isLoading = false;
+        },
     },
 })
-export const getPosts = () => {
+export const getPosts = (page) => {
     return async function getPostsThunk(dispatch) {
         try {
-            const {data} = await api.fetchPosts();
+            dispatch(startLoading());
+            const {data} = await api.fetchPosts(page);
+
+            // console.log(data);
+
             dispatch(fetchApi(data));
         } catch (error) {
             console.error('Error fetching products:', error);
+        }finally {
+            dispatch(stopLoading()); // Stop loading after API call is done (whether success or error)
         }
     };
 };
@@ -43,9 +63,10 @@ export const getPostsBySearch = (searchQuery) => async (dispatch) => {
         console.log(searchQuery);
         const {data : {data}} = await api.fetchPostsBySearch(searchQuery);
         
+        console.log(data);
 
         dispatch(fetchPostsBySearch(data));
-        console.log(data);
+       
     } catch (error) {
         console.log(error);
     }
@@ -59,7 +80,7 @@ export const createPosts  = (post) => async (dispatch) => {
         dispatch(create(data));
     } catch (error) {
         console.log(error);
-    }
+    } 
 }
 
 export const updatePosts = (id,postData) => async (dispatch) => {
@@ -95,5 +116,5 @@ export const likePosts = (id) => async (dispatch) => {
 }
 
 export default CreatePostSlice.reducer;
-export const {create, fetchApi, update , Delete , like , fetchPostsBySearch}= CreatePostSlice.actions;
+export const {create, fetchApi, update , Delete , like , fetchPostsBySearch , startLoading , stopLoading}= CreatePostSlice.actions;
 
