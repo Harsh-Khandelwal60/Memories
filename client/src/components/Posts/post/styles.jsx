@@ -1,5 +1,6 @@
 import { makeStyles } from "mui-styles-hook";
 
+
 export default makeStyles({
   media: {
     height: 0,
@@ -48,5 +49,9 @@ export default makeStyles({
     padding: '0 16px 8px 16px',
     display: 'flex',
     justifyContent: 'space-between',
+  },
+  cardAction: {
+    display: 'block',
+    textAlign: 'initial',
   },
 });

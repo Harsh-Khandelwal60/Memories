@@ -97,9 +97,9 @@ export const createPosts  = (post , Navigate) => async (dispatch) => {
     try {
        
         const {data} = await api.createPost(post)
+
         dispatch(create(data));
 
-        Navigate(`posts/${data._id}`)
     } catch (error) {
         console.log(error);
     } 

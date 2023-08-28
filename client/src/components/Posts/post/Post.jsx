@@ -35,7 +35,7 @@ const Post = ({post , setCurrentId}) => {
     
     return (
         <Card sx={classes.card} raised elevation={6}>
-            <ButtonBase sx={classes.cardActions} onClick={openPost}>
+            <ButtonBase sx={classes.cardAction} onClick={openPost}>
 
                 <CardMedia sx={classes.media} image={post.selectedFile} title={post.title} alt="Image"/> 
                         <CardMedia sx={classes.media} image={post.selectedFile} title={post.title} alt="Image"/>
@@ -61,7 +61,7 @@ const Post = ({post , setCurrentId}) => {
                             </CardContent>
                 </ButtonBase>
                 <CardActions sx={classes.cardActions}>
-                    <Button size="small" color="primary" disabled={!user?.result} onClick={() => dispatch(likePosts(post._id))} >
+                    <Button size="small" color="primary" disabled={!user?.result} onClick={() => dispatch(likePosts(post._id))}>
                         <Likes/>
                     </Button>
 
