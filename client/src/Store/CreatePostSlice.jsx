@@ -41,6 +41,17 @@ const CreatePostSlice = createSlice({
         stopLoading(state) {
             state.isLoading = false;
         },
+        comment(state,action) {
+           return {
+                ...state , 
+                posts : state.posts.map((post) => {
+                    if(post._id === action.payload._id) {
+                        return action.payload;
+                    } 
+                    return post;
+                })
+           }
+        }
     },
 })
 
@@ -67,9 +78,10 @@ export const getPosts = (page) => {
             dispatch(startLoading());
             const {data} = await api.fetchPosts(page);
 
-            // console.log(data);
-
             dispatch(fetchApi(data));
+
+            console.log(data);
+           
         } catch (error) {
             console.error('Error fetching products:', error);
         }finally {
@@ -137,6 +149,19 @@ export const likePosts = (id) => async (dispatch) => {
     }
 }
 
+export const commentPosts = ( value , id) => async (dispatch) => {
+    try {
+         const {data} = await api.comment(value , id);
+
+         dispatch(comment(data));
+
+         return data.comments;
+
+    } catch (error) {
+        
+    }
+}
+
 export default CreatePostSlice.reducer;
-export const {create, fetchApi, update , Delete , like , fetchPostsBySearch , startLoading , stopLoading , fetchPost}= CreatePostSlice.actions;
+export const {create, fetchApi, update , Delete , like , fetchPostsBySearch , startLoading , stopLoading , fetchPost , comment}= CreatePostSlice.actions;
 

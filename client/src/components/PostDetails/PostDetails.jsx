@@ -56,7 +56,7 @@ const PostDetails = () => {
           <Divider style={{ margin: '20px 0' }} />
         </div>
         <div style={classes.imageSection}>
-          <img style={classes.media} src={post.selectedFile || 'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'}  alt={post.title}  />
+          <img style={classes.media} src={post.selectedFile || 'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'} alt={post.title}  />
         </div>
       </div>
       {!!recommendedPosts.length && (
