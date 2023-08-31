@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container } from '@mui/material';
 import { BrowserRouter, Routes, Route ,Navigate } from 'react-router-dom';
 import {  GoogleOAuthProvider  } from '@react-oauth/google';
@@ -8,10 +8,10 @@ import Auth from './components/Auth/Auth';
 import PostDetails from './components/PostDetails/PostDetails';
 
 const App = () => {
-  const user = JSON.parse(localStorage.getItem(`profile`));
+  let [user , setUser] = useState(null);
 
     useEffect(() => {
-
+      setUser(JSON.parse(localStorage.getItem(`profile`)))
     },[user])
 
     
