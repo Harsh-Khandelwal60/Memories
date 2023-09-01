@@ -58,7 +58,7 @@ const CreatePostSlice = createSlice({
 export const getPost = (id) => {
     return async function getPostsThunk(dispatch) {
         try {
-            console.log(`enter`);
+            
             dispatch(startLoading());
             const {data} = await api.fetchPost(id);
 
@@ -75,12 +75,13 @@ export const getPost = (id) => {
 export const getPosts = (page) => {
     return async function getPostsThunk(dispatch) {
         try {
+            // console.log(`enter`);
             dispatch(startLoading());
             const {data} = await api.fetchPosts(page);
 
             dispatch(fetchApi(data));
 
-            console.log(data);
+            // console.log(data);
            
         } catch (error) {
             console.error('Error fetching products:', error);
@@ -111,6 +112,8 @@ export const createPosts  = (post , Navigate) => async (dispatch) => {
         const {data} = await api.createPost(post)
 
         dispatch(create(data));
+
+        Navigate(`${data._id}`);
 
     } catch (error) {
         console.log(error);

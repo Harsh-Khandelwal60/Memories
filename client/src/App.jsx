@@ -11,14 +11,16 @@ const App = () => {
   let [user , setUser] = useState(null);
 
     useEffect(() => {
-      setUser(JSON.parse(localStorage.getItem(`profile`)))
+      if(user){
+        setUser(JSON.parse(localStorage.getItem(`profile`)))
+      }
     },[user])
 
     
 
    return (
     <BrowserRouter>
-    <GoogleOAuthProvider clientId="1035523181687-d5agul9utuplosu60q73pdicertnqimp.apps.googleusercontent.com" >
+    <GoogleOAuthProvider clientId="441732350372-gvjcd2i4bdfpfcghhapqds0715thnbhk.apps.googleusercontent.com" >
        <Container maxWidth="lg">
            <Navbar />
            <Routes>

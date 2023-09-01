@@ -8,7 +8,7 @@ export const getPosts = async(req,res,next) => {
       const {page} = req.query;
         try{
 
-         const LIMIT = 10 ;
+         const LIMIT = 9 ;
          const startInex = (Number(page) -1)*LIMIT; //get the starting index of every page
          const total = await postMessage.find().countDocuments({});
 
@@ -59,6 +59,7 @@ export const getPost = async (req, res) => {
 export const createPost = async (req,res) => {
 
     const post = req.body;
+    console.log(req.body);
 
     const newPost = new postMessage({...post , creator: req.userId, createdAt: new Date().toISOString()});
     
